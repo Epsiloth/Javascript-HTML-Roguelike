@@ -3,20 +3,20 @@ Author: Pablo Torres Antúnez
 */
 export class Roguelike{
 	constructor(width = 30, height = 10){
-		this.levelWidth = width;
-		this.levelHeight = height;
-		this.currentlevel = [];
-		this.enemyturn = true;
-		this.score = 100;
-		this.hasPoints = [];
+		this.levelWidth = width; //The width of the level
+		this.levelHeight = height; //The height of the level
+		this.currentlevel = []; //The matrix of the game
+		this.enemyturn = true; //Boolean to check if enemies move or not
+		this.score = 100; //Score of the player
+		this.hasPoints = []; //Boolean for enemy collision with bonuses
 	}
 
 	/*Generates the level matrix. Walls, items, player, exit and enemies.
-	5 = wall
+	5 = wall [can't pass through them either players nor enemies]
 	0 = player
-	2 = enemy
-	* = pickup item
-	6 = exit
+	2 = enemy 
+	* = pickup item [bonus points]
+	6 = exit [level clear]
 	*/
 	createLevel(){
 		let matrix = [];
@@ -71,7 +71,7 @@ export class Roguelike{
 		this.currentlevel = matrix;
 	}
 
-	//Returns player position in the matrix ([x,y])
+	//Returns player position in the matrix ([x,y]). Used for Move() function.
 	getPlayerPosition(){
 		let position = [-1, -1];
 		for(let i=0;i<this.levelHeight;i++){
@@ -83,7 +83,7 @@ export class Roguelike{
 		return position;
 	}
 
-	//Returns an array of enemy positions ([[x, y], ...])
+	//Returns an array of enemy positions ([[x, y], ...]). Used for Move() function.
 	getEnemyPosition(){
 		let position = [];
 		for(let i=0;i<this.levelHeight;i++){
@@ -95,7 +95,7 @@ export class Roguelike{
 		return position;
 	}
 
-	//Updates positions in the matrix from player and enemies and overwrites the printed level. 
+	//Updates positions in the matrix from player and enemies. Movement is set to the WASD keys.
 	//Returns endgame to see if the game is finished (bool)
 	Move(direction){
 		let endgame = false;
